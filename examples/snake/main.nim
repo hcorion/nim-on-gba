@@ -119,59 +119,65 @@ proc beginGameOverScreen() =
     drawString("You Lost", black, 25, 25)
     drawString("Press Start To Retry ", black, 13, 35)
 
+proc main() =
+    ## Apparently the compiler can optimize better if the main stuff is in a procedure.
 
-# Main procedure.
-type MainState = enum
-    JustLaunched, 
-    Title, 
-    Game, 
-    End
+    # Main procedure.
+    type MainState = enum
+        JustLaunched, 
+        Title, 
+        Game, 
+        End
 
-var
-    appState = JustLaunched
-    targetState = Title
+    var
+        appState = JustLaunched
+        targetState = Title
 
-regDisplayControl[] = VideoMode3 or BGMode2 # mode 3 graphics, we aren't actually using bg2 right now
-regIME[] = 1 # enable interrupts
-while true:
-    # This is awful, but it works for snake.
-    for i in 0..3:
-        vsync()
-        keyPoll()
-        case appState:
-            of Title:
-                handleTitleInput()
-            of Game:
-                handleGameInput()
-            of End:
-                handleGameOverInput()
-            else:
-                discard
-    if targetState == appState:
-        case appState:
-            of Title:
-                if not title.titleOn:
-                    targetState = Game
-            of Game:
-                if state == Won:
-                    targetState = End
-                elif state == Lost:
-                    targetState = End
+    regDisplayControl[] = VideoMode3 or BGMode2 # mode 3 graphics, we aren't actually using bg2 right now
+    regIME[] = 1 # enable interrupts
+    while true:
+        # This is awful, but it works for snake.
+        for i in 0..3:
+            vsync()
+            keyPoll()
+            case appState:
+                of Title:
+                    handleTitleInput()
+                of Game:
+                    handleGameInput()
+                of End:
+                    handleGameOverInput()
                 else:
-                    tickAndDrawGame()
-            of End:
-                if gameOver == true:
-                    targetState = Game
-            else:
-                discard
-    else:
-        appState = targetState
-        case appState:
-            of Title:
-                beginTitleScreen()
-            of Game:
-                restartGame()
-            of End:
-                beginGameOverScreen()
-            else:
-                discard
+                    discard
+        if targetState == appState:
+            case appState:
+                of Title:
+                    if not title.titleOn:
+                        targetState = Game
+                of Game:
+                    if state == Won:
+                        targetState = End
+                    elif state == Lost:
+                        targetState = End
+                    else:
+                        tickAndDrawGame()
+                of End:
+                    if gameOver == true:
+                        targetState = Game
+                else:
+                    discard
+        else:
+            appState = targetState
+            case appState:
+                of Title:
+                    beginTitleScreen()
+                of Game:
+                    restartGame()
+                of End:
+                    beginGameOverScreen()
+                else:
+                    discard
+
+
+when isMainModule:
+    main()

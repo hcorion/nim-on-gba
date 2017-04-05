@@ -57,9 +57,8 @@ proc drawRect*(left, top, right, bottom: uint, color: uint16) =
         width: uint = right - left
         height: uint = bottom - top # Y increases near bottom in GBA land
     for y in 0..<height:
-        var pos = top + y # Premature optimization?
         for x in 0..<width:
-            drawPixel(left + x, pos, color)
+            drawPixel(left + x, top + y, color)
 proc drawRect2*(left, top, width, height: uint, color: uint16) =
     for y in 0..<height:
         for x in 0..<width:
