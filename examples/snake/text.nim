@@ -1,9 +1,9 @@
 import ../../gba
 
-const fontTiles: array[192, uint64] = [
-    (uint64)0x00000000, 0x00000000, 0x18181818, 0x00180018, 0x00003636, 0x00000000, 0x367F3636, 0x0036367F,
+const fontTiles: array[192, uint32] = [
+    (uint32)0x00000000, 0x00000000, 0x18181818, 0x00180018, 0x00003636, 0x00000000, 0x367F3636, 0x0036367F,
     0x3C067C18, 0x00183E60, 0x1B356600, 0x0033566C, 0x6E16361C, 0x00DE733B, 0x000C1818, 0x00000000,
-    0x0C0C1830, 0x0030180C, 0x3030180C, 0x000C1830, (uint64)0xFF3C6600, 0x0000663C, 0x7E181800, 0x00001818, #  0xFF3C6600
+    0x0C0C1830, 0x0030180C, 0x3030180C, 0x000C1830, (uint32)0xFF3C6600, 0x0000663C, 0x7E181800, 0x00001818, #  0xFF3C6600
     0x00000000, 0x0C181800, 0x7E000000, 0x00000000, 0x00000000, 0x00181800, 0x183060C0, 0x0003060C,
     0x7E76663C, 0x003C666E, 0x181E1C18, 0x00181818, 0x3060663C, 0x007E0C18, 0x3860663C, 0x003C6660,
     0x33363C38, 0x0030307F, 0x603E067E, 0x003C6660, 0x3E060C38, 0x003C6666, 0x3060607E, 0x00181818,
@@ -34,62 +34,30 @@ proc drawString*(msg: cstring, color: uint16, x1, y: int) =
     ## https://www.coranac.com/tonc/text/text.htm
     ## Newlines are currently unimplemented.
     var x = x1
-    let pos = y * ((int)ScreenWidth) + x
+    var pos = y * ((int)ScreenWidth) + x
     const CharOffset = 32 # characters 0-32 have no displayable output.
     for c in msg:
-        let index = 2 * (((int)c) - CharOffset)
-
-        var glyphBytes: array[8, uint8]
-        if false:
-            var test = (fontTiles[index] shl 64) or (fontTiles[index+1] shl 32)# 8num3=(num1<<8)|(num2);
-            glyphBytes = cast[ array[8, uint8]](test)
+        if c == '\x0A':
+            pos.inc(((int)ScreenWidth * 8))
+            x = 0
         else:
-            glyphBytes = cast[ array[8, uint8]](fontTiles[index])
+                
+            let index = 2 * (((int)c) - CharOffset)
+
+            # This section is really ugly.
+            # Each row is one byte
+            var glyphBytes = cast[ array[8, uint8]](fontTiles[index])
             var glyphBytes2 = cast[ array[4, uint8]](fontTiles[index+1])
-            for i in 0..<glyphBytes2.len:
+            for i in 0..glyphBytes2.len-1:
                 glyphBytes[i+4] = glyphBytes2[i]
 
-        var row: uint32
-        for iy in 0..7:
-            row = glyphBytes[iy]
-            var ix = x
-            while row > 0'u32:
-                if (row and 1) > 0:
-                    screenBuffer[pos + ((y + iy) * ((int)ScreenWidth) + (x+ix))] = color
-                row = row shr 1
-                ix += 1
-        x+=4
-#drawString("F", black, 5, 10)
-    #[
-unsigned char my_char = 0xAA;
-int what_bit_i_am_testing = 0;
-
-while (what_bit_i_am_testing < 8) {
-  if (my_char & 0x01) {
-     printf("bit %d is 1\n", what_bit_i_am_testing);
-  }
-  else {
-     printf("bit %d is 0\n", what_bit_i_am_testing);
-  }
-
-  what_bit_i_am_testing++;
-  my_char = my_char >> 1;
-}
-    ]#    
-    #[while (msg[c]) != '\0':
-        var row: uint
-        const CharOffest = 32 # characters 0-32 have no displayable output.
-        let index = (2) * (((int) msg[c]) - CharOffest)
-        var glyphBytes: array[8, uint]
-        for i in 0..7:
-            glyphBytes[i] = fontTiles[index + i]
-        for iy in 0..7:
-            row = glyphBytes[iy]
-            for ix in x..0:
-                if (row and 1) > 0'u:
-                    screenBuffer[pos + ((y + iy) * ((int)ScreenWidth) + (x+ix))] = color
-                row = row shr 1
-                    
-            
-            x += 4 # 4 = width of glyph in nibbles?
-        c += 1]#
+            var row: uint32
+            for iy in 0..7:
+                row = glyphBytes[iy]
+                var ix = x
+                while row > 0'u32:
+                    if (row and 1) > 0:
+                        screenBuffer[pos + ((y + iy) * ((int)ScreenWidth) + (x+ix))] = color
+                    row = row shr 1
+                    ix.inc(1)
+        x.inc(4) # 4 = width of glyph in nibbles

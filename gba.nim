@@ -56,12 +56,12 @@ proc drawRect*(left, top, right, bottom: uint, color: uint16) =
     let
         width: uint = right - left
         height: uint = bottom - top # Y increases near bottom in GBA land
-    for y in 0..<height:
-        for x in 0..<width:
+    for y in 0..height-1:
+        for x in 0..width-1:
             drawPixel(left + x, top + y, color)
 proc drawRect2*(left, top, width, height: uint, color: uint16) =
-    for y in 0..<height:
-        for x in 0..<width:
+    for y in 0..height-1:
+        for x in 0..width-1:
             drawPixel(left + x, top + y, color)
 proc clearScreen*() =
     screenBuffer = nil
