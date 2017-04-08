@@ -31,6 +31,8 @@ const
     # Other stuff
     ScreenWidth*: uint = 240
     ScreenHeight*: uint = 160
+
+
 var
     regDisplayControl* {.volatile.} = cast[ptr uint32](0x04000000)
     screenBuffer* = cast[ptr array[(int)ScreenWidth * ScreenHeight, uint16]](MemVRAM)
@@ -40,6 +42,25 @@ var
     regIE {.volatile.} = cast[ptr uint16](RegIEAddr)
     regDispStat {.volatile.} = cast[ptr uint16](RegDispStatAddr)
     regKeyInput {.volatile.} = cast[ptr uint32](RegKeyInputAddr)
+
+# Timer stuff
+const
+    TimerCount = 4
+    TimerIRQ = 64
+    TimerStart = 128
+var
+  REG_TM0CNT* {.volatile.}= cast[ptr uint32]((MemIO + 0x00000100))[]
+  REG_TM0CNT_L* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000100))[]
+  REG_TM0CNT_H* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000102))[]
+  REG_TM1CNT* {.volatile.}= cast[ptr uint32]((MemIO + 0x00000104))[]
+  REG_TM1CNT_L* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000104))[]
+  REG_TM1CNT_H* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000106))[]
+  REG_TM2CNT* {.volatile.}= cast[ptr uint32]((MemIO + 0x00000108))[]
+  REG_TM2CNT_L* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000108))[]
+  REG_TM2CNT_H* {.volatile.}= cast[ptr uint16]((MemIO + 0x0000010A))[]
+  REG_TM3CNT* {.volatile.}= cast[ptr uint32]((MemIO + 0x0000010C))[]
+  REG_TM3CNT_L* {.volatile.}= cast[ptr uint16]((MemIO + 0x0000010C))[]
+  REG_TM3CNT_H* {.volatile.}= cast[ptr uint16]((MemIO + 0x0000010E))[]
 
 # Unused
 #proc rgb15 (red, green, blue: int): uint16 {.inline.} =
