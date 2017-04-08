@@ -1,4 +1,4 @@
-import ../../gba, game
+import ../../gba, game, text
 
 const 
     SnakeLeft* = 0
@@ -28,7 +28,10 @@ proc init*(snake: var Snake, start: Vector2, maxLen: uint) =
     snake.lastMove.x = SnakeRight
     snake.lastMove.y = SnakeStopped
     snake.tail = addr(snake.head)
-    snake.tail.prev = nil
+    snake.tail[].prev = nil
+    for i in 0..<snake.freeNodes.len:
+        var n: SnakeNode
+        snake.freeNodes[i] = n
 
 proc update*(snake: var Snake): bool =
     ## Updates the snake

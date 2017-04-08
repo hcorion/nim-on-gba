@@ -24,6 +24,9 @@ proc handleGameInput() =
 # we'll just use rand()
 proc rand(): cint {.importc: "rand", varargs,
                                   header: "<stdlib.h>".}
+proc srand(num: uint) {.importc: "srand", varargs,
+                                  header: "<stdlib.h>".}
+#srand(time(NULL));
 
 proc spawnTargetNode() =
     var t: Vector2 = (-1, -1)
@@ -52,6 +55,7 @@ proc tickAndDrawGame() =
         
         state = Lost
         return
+
     if snake.length == NumCellsY*NumCellsX:
         state = Won
         return
@@ -64,7 +68,8 @@ proc tickAndDrawGame() =
     drawRect2(GridStart + ((uint)snake.tail.x) * CellSize,
               GridStart + ((uint)snake.tail.y) * CellSize,
               CellSize, CellSize, black)
-    setCellValue( (snake.tail.x, snake.tail.y), 0)
+    setCellValue( (snake.tail[].x, snake.tail[].y), 0)
+
     if snake.update:
         state = Lost
         return
