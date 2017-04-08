@@ -1,5 +1,8 @@
 nimcache/
 
+# MACHINTOSH!!!
+*.DS_Store
+
 # Ingore GBA files
 *.gba
 
