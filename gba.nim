@@ -1,3 +1,18 @@
+# Copyright 2017 Zion Nimchuk
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+# associated documentation files (the "Software"), to deal in the Software without restriction, 
+# including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+# and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS 
+# OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 const
     # Memory Adress locations.
     MemIO = 0x04000000
@@ -34,37 +49,36 @@ const
 
 
 var
-    regDisplayControl* {.volatile.} = cast[ptr uint32](0x04000000)
+    regDisplayControl* {.volatile.} = cast[ptr uint32](MemIO)
     screenBuffer* = cast[ptr array[(int)ScreenWidth * ScreenHeight, uint16]](MemVRAM)
-    regVCount {.volatile.} = cast[ptr uint16](RegVCountAddr)
-    regDispCnt {.volatile.} = cast[ptr uint32](MemIO)
+    regVCount* {.volatile.} = cast[ptr uint16](RegVCountAddr)
     regIME* {.volatile.} = cast[ptr uint16](RegIMEAddr)
-    regIE {.volatile.} = cast[ptr uint16](RegIEAddr)
-    regDispStat {.volatile.} = cast[ptr uint16](RegDispStatAddr)
-    regKeyInput {.volatile.} = cast[ptr uint32](RegKeyInputAddr)
+    regIE* {.volatile.} = cast[ptr uint16](RegIEAddr)
+    regDispStat* {.volatile.} = cast[ptr uint16](RegDispStatAddr)
+    regKeyInput* {.volatile.} = cast[ptr uint32](RegKeyInputAddr)
 
-# Timer stuff
-const
-    TimerCount = 4
-    TimerIRQ = 64
-    TimerStart = 128
+# Timers
+# Great documentation here:
+# https://www.coranac.com/tonc/text/timers.htm
+# I'm not sure if these work, I wasn't able to get them working.
 var
-  REG_TM0CNT* {.volatile.}= cast[ptr uint32]((MemIO + 0x00000100))[]
-  REG_TM0CNT_L* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000100))[]
-  REG_TM0CNT_H* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000102))[]
-  REG_TM1CNT* {.volatile.}= cast[ptr uint32]((MemIO + 0x00000104))[]
-  REG_TM1CNT_L* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000104))[]
-  REG_TM1CNT_H* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000106))[]
-  REG_TM2CNT* {.volatile.}= cast[ptr uint32]((MemIO + 0x00000108))[]
-  REG_TM2CNT_L* {.volatile.}= cast[ptr uint16]((MemIO + 0x00000108))[]
-  REG_TM2CNT_H* {.volatile.}= cast[ptr uint16]((MemIO + 0x0000010A))[]
-  REG_TM3CNT* {.volatile.}= cast[ptr uint32]((MemIO + 0x0000010C))[]
-  REG_TM3CNT_L* {.volatile.}= cast[ptr uint16]((MemIO + 0x0000010C))[]
-  REG_TM3CNT_H* {.volatile.}= cast[ptr uint16]((MemIO + 0x0000010E))[]
-
-# Unused
-#proc rgb15 (red, green, blue: int): uint16 {.inline.} =
-#    return (uint16) red or (green shl 5) or (blue shl 10)
+    regTimer0Control* {.volatile.}= cast[ptr uint16](MemIO + 0x0100)
+    regTimer0Data* {.volatile.}= cast[ptr uint16](MemIO + 0x0102)
+    regTimer1Control* {.volatile.}= cast[ptr uint16](MemIO + 0x0104)
+    regTimer1Data* {.volatile.}= cast[ptr uint16]((MemIO + 0x0106))
+    regTimer2Control* {.volatile.}= cast[ptr uint16](MemIO + 0x0108)
+    regTimer2Data* {.volatile.}= cast[ptr uint16](MemIO + 0x010A)
+    regTimer3Control* {.volatile.}= cast[ptr uint16](MemIO + 0x010C)
+    regTimer3Data* {.volatile.}= cast[ptr uint16](MemIO + 0x010E)
+const
+    TimerFreqSys*    = 0 # System clock timer (16.7 Mhz)
+    TimerFreq1*      = 0 # 1 cycle/tick (16.7 Mhz)
+    TimerFreq64*     = 0x0001 # 64 cycles/tick (262 kHz)
+    TimerFreq256*    = 0x0002 # 256 cycles/tick (66 kHz)
+    TimerFreq1024*   = 0x0003 # 1024 cycles/tick (16 kHz)
+    TimerCascade*    = 0x0004 # Increment when preceding timer overflows
+    TimerIRQ*        = 0x0040 # Enable timer irq
+    TimerEnable*     = 0x0080 # Enable timer
 
 proc vsync*() {.inline.} =
     while regVCount[] >= 160'u16: discard
@@ -112,17 +126,3 @@ proc keyIsDown*(key: uint32): uint32 {.inline.} =
     return ((uint32)currentKey) and key
 proc keyIsUp*(key: uint32): uint32 {.inline.} =
     return (not (uint32)currentKey) and key
-
-proc keyWasDown*(key: uint32): uint32 {.inline.} = # Uhhh, isn't that the same thing as keyIsDown?
-    return ((uint32)currentKey) and key
-proc keyWasUp*(key: uint32): uint32 {.inline.} = # Uhhh, isn't that the same thing as keyIsUp?
-    return (not (uint32)currentKey) and key
-
-
-#[regDisplayControl[] = VideoMode3 or BGMode2
-
-for i in 0..<ScreenWidth * ScreenHeight:
-    screenBuffer[][i] = 0x001F
-    discard
-
-while true: discard]#

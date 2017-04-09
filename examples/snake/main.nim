@@ -1,7 +1,21 @@
+# Copyright 2017 Zion Nimchuk
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+# associated documentation files (the "Software"), to deal in the Software without restriction, 
+# including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+# and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS 
+# OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 import ../../gba
 import game, title, text
 import snake as shnake
-#import random
 
 var
     score = 0
@@ -24,9 +38,6 @@ proc handleGameInput() =
 # we'll just use rand()
 proc rand(): cint {.importc: "rand", varargs,
                                   header: "<stdlib.h>".}
-proc srand(num: uint) {.importc: "srand", varargs,
-                                  header: "<stdlib.h>".}
-#srand(time(NULL));
 
 proc spawnTargetNode() =
     var t: Vector2 = (-1, -1)
@@ -83,7 +94,6 @@ proc renderGame() = spawnTargetNode()
     
 proc restartGame() =
     state = Playing
-    #randomize()
     ## TODO: find a cheaper way to clear the grid array
     ## The C code just uses memset
     for i in 0..<grid.len:
@@ -140,6 +150,7 @@ proc main() =
 
     regDisplayControl[] = VideoMode3 or BGMode2 # mode 3 graphics, we aren't actually using bg2 right now
     regIME[] = 1 # enable interrupts
+
     while true:
         # This is awful, but it works for snake.
         for i in 0..3:

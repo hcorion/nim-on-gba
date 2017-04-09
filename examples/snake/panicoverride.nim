@@ -1,24 +1,26 @@
+# Copyright 2017 Zion Nimchuk
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+# associated documentation files (the "Software"), to deal in the Software without restriction, 
+# including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+# and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS 
+# OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 {.push stack_trace: off, profiler:off.}
 import ../../gba
 import text
 
 proc rawoutput(s: string) =
   drawString((cstring)s, red, 10, 10)
-  #var vram = cast[PVIDMem](0xB8000)
-  #writeString(vram, "Error: ", makeColor(White, Red), (0, 24))
-  #writeString(vram, s, makeColor(White, Red), (7, 24))
 
 proc panic(s: string) =
   rawoutput(s)
-  #rawoutput(s)
-
-# Alternatively we also could implement these 2 here:
-#
-#template sysFatal(exceptn: typeDesc, message: string) =
-#  drawString((cstring)message, red, 10, 10)
-#template sysFatal(exceptn: typeDesc, message, arg: string) =
-#  drawString((cstring)message, red, 10, 10)
-#  drawString((cstring)arg, red, 10, 20)
-
 
 {.pop.}
