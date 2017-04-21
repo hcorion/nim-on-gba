@@ -18,6 +18,11 @@ Inspired by http://kylehalladay.com/blog/tutorial/2017/03/28/GBA-By-Example-1.ht
 - https://github.com/dom96/nimkernel
 - http://www.coranac.com/documents/taptngba/
 
+## Possible future endeavours
+
+Target original gameboy using SDCC: https://en.wikipedia.org/wiki/Small_Device_C_Compiler
+Target Virtual Boy using gccVB: http://www.planetvb.com/modules/tech/?sec=tools&pid=gccvb
+
 ## License
 The main gba.nim file is licensed under the MIT license.
 
