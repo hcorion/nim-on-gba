@@ -46,6 +46,8 @@ const
     # Other stuff
     ScreenWidth*: uint = 240
     ScreenHeight*: uint = 160
+    # Other stuff I'm not sure about.
+    MappingMode1D* = 0x0040
 
 
 var
