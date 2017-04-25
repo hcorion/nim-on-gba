@@ -11,6 +11,9 @@ Inspired by http://kylehalladay.com/blog/tutorial/2017/03/28/GBA-By-Example-1.ht
 
 ## Examples (mostly ports of games written in C)
 - Snake (port of https://github.com/khalladay/GBASnake)
+- Minimum (port of https://gist.github.com/khalladay/7c86f092a48342adf6d35aa2861b3ed3)
+- Sprite (port of Kyle Halladay's tutorial here: http://kylehalladay.com/blog/tutorial/2017/04/04/GBA-By-Example-2.html)
+
 ## Resources
 - [GitHub Gist of tiny GBA example in C](https://gist.github.com/khalladay/7c86f092a48342adf6d35aa2861b3ed3)
 - https://github.com/khalladay/GBASnake
