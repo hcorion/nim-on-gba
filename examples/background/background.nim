@@ -1,29 +1,28 @@
-#define bgTilesLen 128
-const bgTilesLen = 128
+# Copyright 2017 Zion Nimchuk
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+# associated documentation files (the "Software"), to deal in the Software without restriction, 
+# including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+# and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS 
+# OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#define bgPalLen 8
-const bgPalLen = 8
-
-#define checkerBgLen 2048
-const checkerBgLen = 2048
 type Tile* = array[64, uint8]
 type ScreenBlock* = array[1024, uint16]
 
-
-#const unsigned short bgTiles[64] __attribute__((aligned(4)))=
-#[const bgTiles1*: Tile = 
-  [(uint8)0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
-  0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
-  0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
-  0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000]]#
 const bgTiles*: Tile = 
   [(uint8)0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,
   0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,
   0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,
   0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01,0x02, 0x02,0x01, 0x01]
 
-#const bgPal* = [(uint16)0x4DA0,0x0000,0xFFFF,0x0000]
-const bgPal* = [(uint16)0x4D4D,0x0000,0xFFFF] # I can't figure out the color
+const bgPal* = [(uint16)0x4D4D,0x0000,0xFFFF]
 
 const checkerBg*: ScreenBlock =
     [(uint16)0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
