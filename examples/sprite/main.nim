@@ -15,13 +15,14 @@ var
   memPalette* = (cast[ptr array[16, uint16]]((0x05000200)))
 proc main() =
     ## Apparently the compiler can optimize better if it's in a main proc.
+    
     for i in 0..spritePal.len:
         memPalette[i+1] = spritePal[i]
     # I'm not sure why we have to do this.
     memPalette[5] = 0x0000
 
     # I don't get what's up with the 16-offset
-    for i in 0..spriteTiles.len:
+    for i in 0..<spriteTiles.len:
         memTile[][5][0][i+16] = spriteTiles[i]
 
     var spriteAttribs {.volatile codegenDecl: "$# $# __attribute__((packed, aligned(4)))".}: ptr ObjectAttributes = addr(memOAM[0])
