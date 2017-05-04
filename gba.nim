@@ -49,6 +49,12 @@ const
     # Other stuff I'm not sure about.
     MappingMode1D* = 0x0040
 
+# Code for sprite packing if we need it: 
+# import macro
+#template declThePragma(): untyped =
+#  {.pragma: alig, codegenDecl: "$# $# __attribute__((aligned(4)))".}
+
+#declThePragma()
 
 var
     regDisplayControl* {.volatile.} = cast[ptr uint32](MemIO)
@@ -58,6 +64,27 @@ var
     regIE* {.volatile.} = cast[ptr uint16](RegIEAddr)
     regDispStat* {.volatile.} = cast[ptr uint16](RegDispStatAddr)
     regKeyInput* {.volatile.} = cast[ptr uint32](RegKeyInputAddr)
+
+# Background Control flags
+# See the backgrounds example for some basic usage of bg 0 and 1.
+# The ScrollH and ScrollV flags are write only.
+var
+    # Background 0
+    regBG0Control* {.volatile.} = cast[ptr uint16](MemIO + 8)
+    regBG0ScrollH* {.volatile.} = cast[ptr uint16](MemIO + 0x10)
+    regBG0ScrollV* {.volatile.} = cast[ptr uint16](MemIO + 0x12)
+    # Background 1
+    regBG1Control* {.volatile.} = cast[ptr uint16](MemIO + 0xA)
+    regBG1ScrollH* {.volatile.} = cast[ptr uint16](MemIO + 0x14)
+    regBG1ScrollV* {.volatile.} = cast[ptr uint16](MemIO + 0x16)
+    # Background 2
+    regBG2Control* {.volatile.} = cast[ptr uint16](MemIO + 0xC)
+    regBG2ScrollH* {.volatile.} = cast[ptr uint16](MemIO + 0x18)
+    regBG2ScrollV* {.volatile.} = cast[ptr uint16](MemIO + 0x1A)
+    # Background 3
+    regBG3Control* {.volatile.} = cast[ptr uint16](MemIO + 0xE)
+    regBG3ScrollH* {.volatile.} = cast[ptr uint16](MemIO + 0x1C)
+    regBG3ScrollV* {.volatile.} = cast[ptr uint16](MemIO + 0x1E)
 
 # Timers
 # Great documentation here:
