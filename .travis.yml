@@ -9,7 +9,10 @@ addons:
 install:
   - git clone https://github.com/nim-lang/nim
   - cd nim
-  - sh bootstrap.sh
+  - git clone --depth 1 https://github.com/nim-lang/csources.git
+  - cd csources && sh build.sh && cd ../
+  - bin/nim c koch
+  - ./koch boot -d:release
   - export PATH=$(pwd)/bin:$PATH
   - nim e install_nimble.nims
   - nimble install
