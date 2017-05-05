@@ -4,7 +4,7 @@ This example is a clone of Kyle Halladay's background tutorial written in C.
 
 This program uses video mode 0 to display two different backgrounds at the same time moving across the screen horizontally.
 
-You can find the tutorial: 
+You can find the tutorial here: http://kylehalladay.com/blog/tutorial/2017/04/11/GBA-By-Example-3.html
 
 ## Requirements
 - You need to have DevKitPro and DevKitArm installed.
