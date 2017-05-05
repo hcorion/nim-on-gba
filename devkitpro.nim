@@ -23,13 +23,13 @@ proc detectDir(dir: string) =
   ## Basically checks if a file exists, if it doesn't then quit immediately.
   if not dirExists(dir):
     echo "Error: desired path, " & dir & " was not found. Stopping."
-    quit()
+    quit(QuitFailure)
 
 proc detectFile(filePath: string) =
   ## Basically checks if a file exists, if it doesn't then quit immediately.
   if not fileExists(filePath):
     echo "Error: desired file, " & filePath & " was not found. Stopping."
-    quit()
+    quit(QuitFailure)
 
 proc checkDevKitPro(path: string) =
   detectDir(path & "/libgba/include")
@@ -54,7 +54,7 @@ proc detectDevKit*() =
           echo "Tried path " & possibleDevKitPro & " but it doesn't exist."
           echo "To install DevKitPro on " & hostOS & " you can download a auto-installing perl script here: "
           echo "https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitARMupdate.pl/download"
-          quit()
+          quit(QuitFailure)
         else:
           checkDevKitPro(possibleDevKitPro)
           echo "Successfully detected DevKitPro path on MacOS"
@@ -62,11 +62,11 @@ proc detectDevKit*() =
       of "Windows":
         echo "Automatic detection of DevKitPro has not yet been implemented for Windows."
         echo "Feel free to make a Pull Request!"
-        quit()
+        quit(QuitFailure)
       else:
         echo "Automatic detection of DevKitPro has not yet been implemented for " & hostOS & "."
         echo "Feel free to make a Pull Request!"
-        quit()
+        quit(QuitFailure)
 
         
     
@@ -78,26 +78,22 @@ proc detectDevKit*() =
   else:
     echo "DevKitArm environmental variable not found, attempting automatic detection."
     case hostOS:
-      of "macosx":
+      of "macosx", "linux":
         var possibleDevKitArm = getHomeDir() & "devkitPro/devkitARM"
         if not dirExists(possibleDevKitArm):
           echo "Tried path " & possibleDevKitArm & " but it doesn't exist."
           echo "To install DevKitArm on MacOS you can download a auto-installing perl script here: "
           echo "https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitARMupdate.pl/download"
-          quit()
+          quit(QuitFailure)
         else:
           checkDevKitArm(possibleDevKitArm)
           echo "Successfully detected DevKitArm path on MacOS"
           devKitArmPath = possibleDevKitArm
-      of "linux":
-        echo "Automatic detection of DevKitArm has not yet been implemented for Linux."
-        echo "Feel free to make a Pull Request!"
-        quit()
       of "Windows":
         echo "Automatic detection of DevKitArm has not yet been implemented for Windows."
         echo "Feel free to make a Pull Request!"
-        quit()
+        quit(QuitFailure)
       else:
         echo "Automatic detection of DevKitArm has not yet been implemented for " & hostOS & "."
         echo "Feel free to make a Pull Request!"
-        quit()
+        quit(QuitFailure)
