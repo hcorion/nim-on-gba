@@ -16,7 +16,7 @@ install:
   - export PATH=$(pwd)/bin:$PATH
   - nim e install_nimble.nims
   - nimble install
-  - nimble install nake
+  - nimble -y install nake
   - cd ..
   - echo "Installing DevKitPro"
   - curl -L https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitARMupdate.pl/download -o devkitARMupdate.pl
