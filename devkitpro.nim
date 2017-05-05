@@ -57,7 +57,7 @@ proc detectDevKit*() =
           quit(QuitFailure)
         else:
           checkDevKitPro(possibleDevKitPro)
-          echo "Successfully detected DevKitPro path on MacOS"
+          echo "Successfully detected DevKitPro path on " & hostOS & "."
           devKitProPath = possibleDevKitPro
       of "Windows":
         echo "Automatic detection of DevKitPro has not yet been implemented for Windows."
@@ -82,12 +82,12 @@ proc detectDevKit*() =
         var possibleDevKitArm = getHomeDir() & "devkitPro/devkitARM"
         if not dirExists(possibleDevKitArm):
           echo "Tried path " & possibleDevKitArm & " but it doesn't exist."
-          echo "To install DevKitArm on MacOS you can download a auto-installing perl script here: "
+          echo "To install DevKitArm on " & hostOS & " you can download a auto-installing perl script here: "
           echo "https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitARMupdate.pl/download"
           quit(QuitFailure)
         else:
           checkDevKitArm(possibleDevKitArm)
-          echo "Successfully detected DevKitArm path on MacOS"
+          echo "Successfully detected DevKitArm path on " & hostOS & "."
           devKitArmPath = possibleDevKitArm
       of "Windows":
         echo "Automatic detection of DevKitArm has not yet been implemented for Windows."
