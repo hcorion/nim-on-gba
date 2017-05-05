@@ -1,0 +1,26 @@
+dist: trusty
+sudo: false
+language: c
+os: linux
+addons:
+  apt:
+    packages:
+    - perl
+install:
+  - git clone https://github.com/nim-lang/nim
+  - cd nim
+  - sh bootstrap.sh
+  - export PATH=$(pwd)/bin:$PATH
+  - nim e install_nimble.nims
+  - nimble install
+  - nimble install nake
+  - cd ..
+  - echo "Installing DevKitPro"
+  - curl -L https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitARMupdate.pl/download -o devkitARMupdate.pl
+  - perl ./devkitARMupdate.pl
+before_script:
+  - set -e
+  - export PATH=$(pwd)/nim/bin:$(pwd):$PATH
+script:
+  - cd examples
+  - ./buildall.sh

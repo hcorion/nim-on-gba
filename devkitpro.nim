@@ -48,21 +48,17 @@ proc detectDevKit*() =
   else:
     echo "DevKitPro environmental variable not found, attempting automatic detection."
     case hostOS:
-      of "macosx":
+      of "macosx", "linux":
         var possibleDevKitPro = getHomeDir() & "devkitPro"
         if not dirExists(possibleDevKitPro):
           echo "Tried path " & possibleDevKitPro & " but it doesn't exist."
-          echo "To install DevKitPro on MacOS you can download a auto-installing perl script here: "
+          echo "To install DevKitPro on " & hostOS & " you can download a auto-installing perl script here: "
           echo "https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitARMupdate.pl/download"
           quit()
         else:
           checkDevKitPro(possibleDevKitPro)
           echo "Successfully detected DevKitPro path on MacOS"
           devKitProPath = possibleDevKitPro
-      of "linux":
-        echo "Automatic detection of DevKitPro has not yet been implemented for Linux."
-        echo "Feel free to make a Pull Request!"
-        quit()
       of "Windows":
         echo "Automatic detection of DevKitPro has not yet been implemented for Windows."
         echo "Feel free to make a Pull Request!"
