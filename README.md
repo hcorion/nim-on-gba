@@ -1,5 +1,11 @@
 # Nim On GBA
 
+### **UPDATE: DON'T USE THIS**
+
+If you're actually interested in doing GBA game development in Nim, I would highly recommend checking out natu by exelotl (https://github.com/exelotl/natu) instead of the code on this repo. He's made much better progress than I in getting working GBA games in Nim.
+
+### Original readme continued:
+
 Are you tired of writing your Game Boy Advanced code in C?
 
 Wouldn't you love to write your GBA code in python-esque syntax?
